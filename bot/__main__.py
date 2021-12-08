@@ -3,7 +3,9 @@ import signal
 import os
 import asyncio
 import time
+import pytz
 import subprocess
+import datetime
 
 from pyrogram import idle
 from sys import executable
@@ -21,9 +23,11 @@ from .helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper import button_build
 from .modules import authorize, list, cancel_mirror, mirror_status, mirror, clone, watch, shell, eval, delete, speedtest, count, leech_settings, search
 
+now=datetime.now(pytz.timezone('Asia/Kolkata'))
 
 def stats(update, context):
     currentTime = get_readable_time(time.time() - botStartTime)
+    current = now.strftime('📅: %d/%m/%Y\n⏲️: %I:%M:%S %p')
     total, used, free = shutil.disk_usage('.')
     total = get_readable_file_size(total)
     used = get_readable_file_size(used)
@@ -43,28 +47,23 @@ def stats(update, context):
     mem_t = get_readable_file_size(memory.total)
     mem_a = get_readable_file_size(memory.available)
     mem_u = get_readable_file_size(memory.used)
-    stats = f'<b>Bot Uptime:</b> {currentTime}\n\n'\
-            f'<b>Total Disk Space:</b> {total}\n'\
-            f'<b>Used:</b> {used} | <b>Free:</b> {free}\n\n'\
-            f'<b>Upload:</b> {sent}\n'\
-            f'<b>Download:</b> {recv}\n\n'\
-            f'<b>CPU:</b> {cpuUsage}%\n'\
-            f'<b>RAM:</b> {mem_p}%\n'\
-            f'<b>DISK:</b> {disk}%\n\n'\
-            f'<b>Physical Cores:</b> {p_core}\n'\
-            f'<b>Total Cores:</b> {t_core}\n\n'\
-            f'<b>SWAP:</b> {swap_t} | <b>Used:</b> {swap_p}%\n'\
-            f'<b>Memory Total:</b> {mem_t}\n'\
-            f'<b>Memory Free:</b> {mem_a}\n'\
-            f'<b>Memory Used:</b> {mem_u}\n'
+    stats = f'<b>•• ━━ ɯιȥαɾԃ x ɱιɾɾσɾ ━━ ••</b>\n\n' \
+            f'<b>• ▶️Started AT :-> </b>\n<b>{current}</b>\n' \
+            f'<b>• ⌚Running From :-> </b> {currentTime}\n\n'\
+            f'🗄️DISK INFO🗄️<b>• Total :-> </b> {total}\n'\
+            f'<b>• Used :-> </b> {used} | <b>• Free :-> </b> {free}\n\n'\
+            f'📇DATA USAGE📇\n<b>• Uploaded:-> </b> {sent}\n' \
+            f'<b>• Downloaded:-> </b> {recv}\n\n' \
+            f'🖥️SYSTEM INFO🖥️\n<b>• CPU :-> </b> {cpuUsage}%\n'\
+            f'<b>• Disk :-> </b> {disk}%\n\n'\
+            f'⛏️RAM INFO⛏️\n<b>• Total:-> </b> {mem_t}\n'\
+            f'<b>• Free:-> </b> {mem_a} | <b>• Used:-> </b> {mem_u}\n'\
+            f'<b>• Usage :-> </b> {mem_p}%\n'\
+            f'<b>•• ━━ ɱαԃҽ ɯιƚԋ ʅσʋҽ Ⴆყ ҽαɠʅҽ-ɳҽႦυʅα ━━ ••</b>\n\n'
     sendMessage(stats, context.bot, update)
 
 
 def start(update, context):
-    buttons = button_build.ButtonMaker()
-    buttons.buildbutton("Repo", "https://www.github.com/anasty17/mirror-leech-telegram-bot")
-    buttons.buildbutton("Report Group", "https://t.me/mltbbugsreport")
-    reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''
 This bot can mirror all your links to Google Drive!
@@ -161,7 +160,7 @@ help_string_telegraph = f'''<br>
 '''
 
 help = telegraph.create_page(
-        title='Mirror-Leech-Bot Help',
+        title='ɯιȥαɾԃ-x-ɱιɾɾσɾ Help',
         content=help_string_telegraph,
     )["path"]
 
@@ -242,7 +241,7 @@ def main():
         os.remove(".restartmsg")
     elif OWNER_ID:
         try:
-            text = "<b>Bot Restarted!</b>"
+            text = "<b>Bot has Restarted!</b>\n\n<b>Courtesy of ɯιȥαɾԃ x ɱιɾɾσɾ</b>"
             bot.sendMessage(chat_id=OWNER_ID, text=text, parse_mode=ParseMode.HTML)
             if AUTHORIZED_CHATS:
                 for i in AUTHORIZED_CHATS:

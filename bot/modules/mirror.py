@@ -241,7 +241,7 @@ class MirrorListener(listeners.MirrorListeners):
                     time.sleep(1.5)
                     sendMessage(msg + fmsg, self.bot, self.update)
             if self.isQbit and QB_SEED:
-                return
+                update_all_messages()
             else:
                 with download_dict_lock:
                     try:
@@ -250,12 +250,11 @@ class MirrorListener(listeners.MirrorListeners):
                         pass
                     del download_dict[self.uid]
                     count = len(download_dict)
-                if count == 0:
-                    self.clean()
-                else:
-                    update_all_messages()
-                return
-
+                    if count == 0:
+                        self.clean()
+                    else:
+                        update_all_messages()
+            return
         with download_dict_lock:
             msg = f'<b>Name: </b><code>{download_dict[self.uid].name()}</code>\n\n<b>Size: </b>{size}'
             msg += f'\n\n<b>Type: </b>{typ}'
@@ -292,22 +291,20 @@ class MirrorListener(listeners.MirrorListeners):
                 uname = f'<a href="tg://user?id={self.message.from_user.id}">{self.message.from_user.first_name}</a>'
             if uname is not None:
                 msg += f'\n\n<b>cc: </b>{uname}'
-
-        sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
-        if self.isQbit and QB_SEED:
-            return
-        else:
-            with download_dict_lock:
+            sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
+            if self.isQbit and QB_SEED:
+                update_all_messages()
+            else:
                 try:
                     fs_utils.clean_download(download_dict[self.uid].path())
                 except FileNotFoundError:
                     pass
                 del download_dict[self.uid]
                 count = len(download_dict)
-            if count == 0:
-                self.clean()
-            else:
-                update_all_messages()
+                if count == 0:
+                    self.clean()
+                else:
+                    update_all_messages()
 
     def onUploadError(self, error):
         e_str = error.replace('<', '').replace('>', '')

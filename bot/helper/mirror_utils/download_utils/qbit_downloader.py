@@ -14,7 +14,7 @@ from telegram.ext import CallbackQueryHandler
 from bot import download_dict, download_dict_lock, BASE_URL, dispatcher, get_client, TORRENT_DIRECT_LIMIT, ZIP_UNZIP_LIMIT, STOP_DUPLICATE, WEB_PINCODE, QB_SEED
 from bot.helper.mirror_utils.status_utils.qbit_download_status import QbDownloadStatus
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
-from bot.helper.telegram_helper.message_utils import sendMessage, sendMarkup, deleteMessage, sendStatusMessage, update_all_messages
+from bot.helper.telegram_helper.message_utils import sendMessage, sendMarkup, deleteMessage, sendStatusMessage
 from bot.helper.ext_utils.bot_utils import setInterval, MirrorStatus, getDownloadByGid, get_readable_file_size, new_thread, get_readable_time
 from bot.helper.telegram_helper import button_build
 
@@ -228,8 +228,6 @@ class QbitTorrent:
                 if QB_SEED:
                     with download_dict_lock:
                         download_dict[self.listener.uid] = QbDownloadStatus(self.gid, self.listener, self.ext_hash, self.client)
-                    update_all_messages()
-                    LOGGER.info(f"Seeding started: {tor_info.name}")
                 else:
                     self.client.torrents_delete(torrent_hashes=self.ext_hash)
                     self.client.auth_log_out()

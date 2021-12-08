@@ -26,7 +26,7 @@ def countNode(update, context):
         except DirectDownloadLinkException as e:
             return sendMessage(str(e), context.bot, update)
     if is_gdrive_link(link):
-        msg = sendMessage(f"Counting: <code>{link}</code>", context.bot, update)
+        msg = sendMessage(f"Counting the Size of the Provided GDrive Link: <code>{link}</code>", context.bot, update)
         gd = GoogleDriveHelper()
         result = gd.count(link)
         deleteMessage(context.bot, msg)

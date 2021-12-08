@@ -169,7 +169,7 @@ def getResult(search_results, key, message, tool):
 
     editMessage(f"<b>Creating</b> {len(telegraph_content)} <b>Telegraph pages.</b>", message)
     path = [telegraph.create_page(
-                title='Mirror-leech-bot Torrent Search',
+                title='Wizard-X-Mirror-Bot Torrent Search',
                 content=content
             )["path"] for content in telegraph_content]
     time.sleep(0.5)
@@ -195,7 +195,7 @@ def edit_telegraph(path, telegraph_content):
                 nxt_page += 1
         telegraph.edit_page(
             path = path[prev_page],
-            title = 'Mirror-leech-bot Torrent Search',
+            title = 'Wizard-X-Mirror-Bot Torrent Search',
             content=content
         )
     return
